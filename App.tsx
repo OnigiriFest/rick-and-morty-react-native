@@ -1,11 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import Results from './screens/Results';
 
+const client = new ApolloClient({
+  uri: 'https://rickandmortyapi.com/graphql',
+  cache: new InMemoryCache(),
+});
+
 export default function App() {
-  return <Results />;
+  return (
+    <ApolloProvider client={client}>
+      <Results />
+    </ApolloProvider>
+  );
 }
 
 const styles = StyleSheet.create({
