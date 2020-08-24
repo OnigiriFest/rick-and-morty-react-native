@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 const Header = (props: any) => {
   return <View style={styles.header}>{props.children}</View>;
@@ -7,12 +7,11 @@ const Header = (props: any) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: '15%',
-    minHeight: 102,
+    height: '11%',
+    minHeight: 64,
     flexDirection: 'row',
     backgroundColor: 'black',
     alignItems: 'center',
-    paddingTop: StatusBar.currentHeight,
     paddingHorizontal: 15,
   },
 });

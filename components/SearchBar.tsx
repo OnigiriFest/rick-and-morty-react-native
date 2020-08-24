@@ -5,6 +5,7 @@ import { useQuery, gql, QueryResult } from '@apollo/client';
 
 import ResultsData from '../types/Results';
 import Filter from '../types/Filter';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 interface SearchBarProps {
   setResults: (results: QueryResult) => void;
@@ -53,15 +54,26 @@ const SearchBar = ({ setResults, type }: Props) => {
 
   return (
     <>
-      <View style={styles.iconContainer}>
+      <View style={{ ...styles.iconContainer, ...styles.iconLeft }}>
         <AntDesign name="search1" size={24} color="#cbd5e0" />
       </View>
       <TextInput
         value={searchTerm}
         onChangeText={(text) => setSearchTerm(text)}
         placeholder="Morty"
-        style={styles.searchInput}
+        style={
+          searchTerm.length > 0
+            ? styles.searchInput
+            : { ...styles.searchInput, ...styles.radiusRight }
+        }
       />
+      {searchTerm.length > 0 ? (
+        <TouchableHighlight
+          onPress={() => setSearchTerm('')}
+          style={{ ...styles.iconContainer, ...styles.radiusRight }}>
+          <AntDesign name="close" size={24} color="#cbd5e0" />
+        </TouchableHighlight>
+      ) : null}
     </>
   );
 };
@@ -72,18 +84,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A202C',
     color: 'white',
     height: 42,
-    borderTopRightRadius: 100,
-    borderBottomRightRadius: 100,
     paddingLeft: 10,
   },
   iconContainer: {
     backgroundColor: '#1A202C',
-    borderTopLeftRadius: 100,
-    borderBottomLeftRadius: 100,
     justifyContent: 'center',
     width: 40,
     height: 42,
-    paddingLeft: 10,
+    paddingHorizontal: 10,
+  },
+  iconLeft: {
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 100,
+  },
+  radiusRight: {
+    borderTopRightRadius: 100,
+    borderBottomRightRadius: 100,
   },
 });
 

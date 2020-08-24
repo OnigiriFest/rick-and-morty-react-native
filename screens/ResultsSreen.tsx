@@ -19,7 +19,13 @@ import Character from '../types/Character';
 import Location from '../types/Location';
 import Episode from '../types/Episode';
 
-const Results = () => {
+interface ResultsProps {
+  navigation: any;
+}
+
+type Props = ResultsProps;
+
+const Results = (props: Props) => {
   const [results, setResults] = useState<QueryResult>();
   const [filter, setFilter] = useState<Filter>('characters');
 
@@ -32,7 +38,7 @@ const Results = () => {
     if (results?.error) {
       return (
         <Text style={styles.resultsContainerText}>
-          Error: {results.error.message}
+          No results found for this search.
         </Text>
       );
     }
@@ -40,7 +46,13 @@ const Results = () => {
     if (filter === 'characters') {
       if (results?.data.characters) {
         return results?.data.characters.results.map((character: Character) => {
-          return <Card key={character.id} character={character} />;
+          return (
+            <Card
+              navigation={props.navigation}
+              key={character.id}
+              character={character}
+            />
+          );
         });
       }
     }
@@ -48,7 +60,13 @@ const Results = () => {
     if (filter === 'locations') {
       if (results?.data.locations) {
         return results?.data.locations.results.map((location: Location) => {
-          return <Card key={location.id} location={location} />;
+          return (
+            <Card
+              navigation={props.navigation}
+              key={location.id}
+              location={location}
+            />
+          );
         });
       }
     }
@@ -56,7 +74,13 @@ const Results = () => {
     if (filter === 'episodes') {
       if (results?.data.episodes) {
         return results?.data.episodes.results.map((episode: Episode) => {
-          return <Card key={episode.id} episode={episode} />;
+          return (
+            <Card
+              navigation={props.navigation}
+              key={episode.id}
+              episode={episode}
+            />
+          );
         });
       }
     }
@@ -82,7 +106,10 @@ const Results = () => {
         style={styles.resultsContainer}
         contentContainerStyle={styles.contentContainer}>
         {renderResults()}
-        {!results?.loading && results?.data[filter] ? (
+        {results &&
+        results.data &&
+        !results?.loading &&
+        results?.data[filter] ? (
           <View style={styles.paginationContainer}>
             {results?.data[filter].info.prev === null ? (
               <View></View>
@@ -129,7 +156,7 @@ const Results = () => {
 const styles = StyleSheet.create({
   resultsContainer: {
     backgroundColor: '#1A202C',
-    height: '75%',
+    height: '79%',
   },
   contentContainer: {
     alignItems: 'center',
