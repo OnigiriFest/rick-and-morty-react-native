@@ -1,33 +1,27 @@
-import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-  Button,
-} from 'react-native';
 import { QueryResult } from '@apollo/client';
-
-import FilterMenu from '../components/FilterMenu';
+import React, { useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import Card from '../components/Card';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
-import Card from '../components/Card';
-
-import Filter from '../types/Filter';
 import Character from '../types/Character';
-import Location from '../types/Location';
 import Episode from '../types/Episode';
+import Location from '../types/Location';
 
 interface ResultsProps {
   navigation: any;
+  route: any;
 }
 
 type Props = ResultsProps;
 
 const Results = (props: Props) => {
   const [results, setResults] = useState<QueryResult>();
-  const [filter, setFilter] = useState<Filter>('characters');
+  const filter =
+    props.route.params && props.route.params.type
+      ? props.route.params.type
+      : 'characters';
 
   const renderResults = () => {
     if (results?.loading)
@@ -43,48 +37,6 @@ const Results = (props: Props) => {
       );
     }
 
-    if (filter === 'characters') {
-      if (results?.data.characters) {
-        return results?.data.characters.results.map((character: Character) => {
-          return (
-            <Card
-              navigation={props.navigation}
-              key={character.id}
-              character={character}
-            />
-          );
-        });
-      }
-    }
-
-    if (filter === 'locations') {
-      if (results?.data.locations) {
-        return results?.data.locations.results.map((location: Location) => {
-          return (
-            <Card
-              navigation={props.navigation}
-              key={location.id}
-              location={location}
-            />
-          );
-        });
-      }
-    }
-
-    if (filter === 'episodes') {
-      if (results?.data.episodes) {
-        return results?.data.episodes.results.map((episode: Episode) => {
-          return (
-            <Card
-              navigation={props.navigation}
-              key={episode.id}
-              episode={episode}
-            />
-          );
-        });
-      }
-    }
-
     return (
       <View>
         <Text style={styles.resultsContainerText}>
@@ -94,71 +46,74 @@ const Results = (props: Props) => {
     );
   };
 
-  let scrollView: ScrollView | null;
-
   return (
     <View>
       <Header>
         <SearchBar type={filter} setResults={setResults} />
       </Header>
-      <ScrollView
-        ref={(scroll) => (scrollView = scroll)}
-        style={styles.resultsContainer}
-        contentContainerStyle={styles.contentContainer}>
-        {renderResults()}
-        {results &&
-        results.data &&
-        !results?.loading &&
-        results?.data[filter] ? (
-          <View style={styles.paginationContainer}>
-            {results?.data[filter].info.prev === null ? (
-              <View></View>
-            ) : (
-              <Button
-                title="<"
-                onPress={() => {
-                  results?.fetchMore({
-                    variables: { page: results?.data[filter].info.prev },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      return fetchMoreResult;
+      <View style={styles.container}>
+        {results && results.data ? (
+          <FlatList
+            contentContainerStyle={styles.contentContainer}
+            keyExtractor={(item: Character & Location & Episode) => {
+              return item.id.toString();
+            }}
+            data={
+              results && results.data && results.data[filter]
+                ? results?.data[filter].results
+                : null
+            }
+            onEndReached={() => {
+              if (results.data[filter].info.next === null) {
+                return;
+              }
+
+              results.fetchMore({
+                variables: { page: results.data[filter].info.next },
+                updateQuery: (prev, { fetchMoreResult }) => {
+                  if (!fetchMoreResult) {
+                    return prev;
+                  }
+
+                  return {
+                    [filter]: {
+                      __typename: fetchMoreResult[filter].__typename,
+                      info: { ...fetchMoreResult[filter].info },
+                      results: [
+                        ...prev[filter].results,
+                        ...fetchMoreResult[filter].results,
+                      ],
                     },
-                  });
-
-                  scrollView?.scrollTo({ y: 0 });
-                }}
-              />
+                  };
+                },
+              });
+            }}
+            renderItem={(data) => (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                }}>
+                <Card
+                  navigation={props.navigation}
+                  data={data.item}
+                  type={filter}
+                />
+              </View>
             )}
-
-            {results?.data[filter].info.next === null ? (
-              <View></View>
-            ) : (
-              <Button
-                title=">"
-                onPress={() => {
-                  results?.fetchMore({
-                    variables: { page: results?.data[filter].info.next },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      return fetchMoreResult;
-                    },
-                  });
-
-                  scrollView?.scrollTo({ y: 0 });
-                }}
-              />
-            )}
-          </View>
+          />
         ) : null}
-      </ScrollView>
-      <FilterMenu setFilter={setFilter} />
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  resultsContainer: {
+  container: {
+    height: '90%',
     backgroundColor: '#1A202C',
-    height: '79%',
   },
   contentContainer: {
+    width: '100%',
     alignItems: 'center',
   },
   activityIndicator: {

@@ -36,8 +36,6 @@ const DetailScreen = (props: Props) => {
   }
   `;
 
-  console.log(query);
-
   const { loading, error, data } = useQuery(query);
 
   const renderItem = () => {

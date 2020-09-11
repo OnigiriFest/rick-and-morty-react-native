@@ -7,61 +7,45 @@ import Location from '../types/Location';
 import Episode from '../types/Episode';
 
 interface CardProps {
-  character?: Character;
-  location?: Location;
-  episode?: Episode;
+  data: Character & Location & Episode;
+  type: 'characters' | 'locations' | 'episodes';
   navigation: any;
 }
 
 type Props = CardProps;
 
-const Card = ({ character, location, episode, navigation }: Props) => {
+const Card = ({ data, type, navigation }: Props) => {
   return (
     <>
-      {character && (
-        <View key={character.id} style={styles.card}>
+      {type === 'characters' ? (
+        <View key={data.id} style={styles.card}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Details', {
-                id: character.id,
+                id: data.id,
                 type: 'character',
               })
             }>
-            <Image source={{ uri: character.image }} style={styles.image} />
+            <Image source={{ uri: data.image }} style={styles.image} />
             <View style={styles.cardInfo}>
-              <Text style={styles.title}>{character.name}</Text>
+              <Text style={styles.title}>{data.name}</Text>
             </View>
           </TouchableOpacity>
         </View>
-      )}
-      {location && (
-        <View key={location.id} style={styles.card}>
+      ) : (
+        <View key={data.id} style={styles.card}>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Details', {
-                id: location.id,
-                type: 'location',
+                id: data.id,
+                type: type === 'locations' ? 'location' : 'episode',
               })
             }>
             <View style={styles.cardInfo}>
-              <Text style={styles.title}>{location.name}</Text>
-              <Text style={styles.text}>{location.dimension}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )}
-      {episode && (
-        <View key={episode.id} style={styles.card}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Details', {
-                id: episode.id,
-                type: 'episode',
-              })
-            }>
-            <View style={styles.cardInfo}>
-              <Text style={styles.title}>{episode.name}</Text>
-              <Text style={styles.text}>{episode.episode}</Text>
+              <Text style={styles.title}>{data.name}</Text>
+              <Text style={styles.text}>
+                {data.dimension ? data.dimension : data.episode}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

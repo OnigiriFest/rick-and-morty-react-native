@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { AntDesign } from '@expo/vector-icons';
 
 import Results from './screens/ResultsSreen';
 import DetailScreen from './screens/DetailScreen';
@@ -13,6 +15,48 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const Tab = createBottomTabNavigator();
+
+function SearchTab() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Characters"
+        component={Results}
+        initialParams={{ type: 'characters' }}
+        options={{
+          tabBarLabel: 'Characeters',
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="user" color={color} size={25} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Locations"
+        component={Results}
+        initialParams={{ type: 'locations' }}
+        options={{
+          tabBarLabel: 'Locations',
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="earth" color={color} size={25} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Episodes"
+        component={Results}
+        initialParams={{ type: 'episodes' }}
+        options={{
+          tabBarLabel: 'Episodes',
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="videocamera" color={color} size={25} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -21,7 +65,7 @@ export default function App() {
       <ApolloProvider client={client}>
         <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Results" component={Results} />
+          <Stack.Screen name="Results" component={SearchTab} />
           <Stack.Screen name="Details" component={DetailScreen} />
         </Stack.Navigator>
       </ApolloProvider>
