@@ -16,34 +16,42 @@ interface ResultsProps {
 
 type Props = ResultsProps;
 
-const Results = (props: Props) => {
+const Results = ({ route: { params }, navigation }: Props) => {
   const [results, setResults] = useState<QueryResult>();
-  const filter =
-    props.route.params && props.route.params.type
-      ? props.route.params.type
-      : 'characters';
+  const filter = params && params.type ? params.type : 'characters';
 
-  const renderResults = () => {
-    if (results?.loading)
-      return (
-        <ActivityIndicator style={styles.activityIndicator} size="large" />
-      );
+  const extactKey = (item: Character & Location & Episode) => {
+    return item.id.toString();
+  };
 
-    if (results?.error) {
-      return (
-        <Text style={styles.resultsContainerText}>
-          No results found for this search.
-        </Text>
-      );
+  const handleOnEndReached = () => {
+    if (!results) {
+      return;
     }
 
-    return (
-      <View>
-        <Text style={styles.resultsContainerText}>
-          Welcome!, search something about Rick and Morty to start.
-        </Text>
-      </View>
-    );
+    if (results.data[filter].info.next === null) {
+      return;
+    }
+
+    results.fetchMore({
+      variables: { page: results.data[filter].info.next },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) {
+          return prev;
+        }
+
+        return {
+          [filter]: {
+            __typename: fetchMoreResult[filter].__typename,
+            info: { ...fetchMoreResult[filter].info },
+            results: [
+              ...prev[filter].results,
+              ...fetchMoreResult[filter].results,
+            ],
+          },
+        };
+      },
+    });
   };
 
   return (
@@ -55,50 +63,22 @@ const Results = (props: Props) => {
         {results && results.data ? (
           <FlatList
             contentContainerStyle={styles.contentContainer}
-            keyExtractor={(item: Character & Location & Episode) => {
-              return item.id.toString();
-            }}
+            keyExtractor={(item: Character & Location & Episode) =>
+              extactKey(item)
+            }
             data={
               results && results.data && results.data[filter]
                 ? results?.data[filter].results
                 : null
             }
-            onEndReached={() => {
-              if (results.data[filter].info.next === null) {
-                return;
-              }
-
-              results.fetchMore({
-                variables: { page: results.data[filter].info.next },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                  if (!fetchMoreResult) {
-                    return prev;
-                  }
-
-                  return {
-                    [filter]: {
-                      __typename: fetchMoreResult[filter].__typename,
-                      info: { ...fetchMoreResult[filter].info },
-                      results: [
-                        ...prev[filter].results,
-                        ...fetchMoreResult[filter].results,
-                      ],
-                    },
-                  };
-                },
-              });
-            }}
+            onEndReached={handleOnEndReached}
             renderItem={(data) => (
               <View
                 style={{
                   flexDirection: 'row',
                   width: '100%',
                 }}>
-                <Card
-                  navigation={props.navigation}
-                  data={data.item}
-                  type={filter}
-                />
+                <Card navigation={navigation} data={data.item} type={filter} />
               </View>
             )}
           />

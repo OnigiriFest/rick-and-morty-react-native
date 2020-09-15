@@ -15,17 +15,23 @@ const CharacterDetail = ({ character }: Props) => {
 
     if (character.gender)
       componentsToRender.push(
-        <Text style={styles.text}>Gender: {character.gender}</Text>
+        <Text key={'gender'} style={styles.text}>
+          Gender: {character.gender}
+        </Text>
       );
 
     if (character.species)
       componentsToRender.push(
-        <Text style={styles.text}>Specie: {character.species}</Text>
+        <Text key={'species'} style={styles.text}>
+          Specie: {character.species}
+        </Text>
       );
 
     if (character.type)
       componentsToRender.push(
-        <Text style={styles.text}>Type: {character.type}</Text>
+        <Text key={'type'} style={styles.text}>
+          Type: {character.type}
+        </Text>
       );
 
     return componentsToRender;

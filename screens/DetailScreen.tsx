@@ -20,18 +20,25 @@ type Props = DetailProp;
 const DetailScreen = (props: Props) => {
   const type = props.route.params.type;
 
+  const queryType = () => {
+    switch (type) {
+      case 'character':
+        return 'image gender type species';
+      case 'location':
+        return 'dimension type residents { id name image }';
+      case 'episode':
+        return 'episode air_date characters { id name image }';
+      default:
+        return '';
+    }
+  };
+
   const query = gql`
   query {
     ${type}(id: ${props.route.params.id}) {
       id
       name
-      ${type === 'character' ? 'image gender type species' : ''}
-      ${type === 'location' ? 'dimension type residents { id name image }' : ''}
-      ${
-        type === 'episode'
-          ? 'episode air_date characters { id name image }'
-          : ''
-      }
+      ${queryType()}
     }
   }
   `;
@@ -50,22 +57,16 @@ const DetailScreen = (props: Props) => {
       );
     }
 
-    if (props.route.params.type === 'character') {
-      if (data.character) {
-        return <CharacterDetail character={data.character} />;
-      }
+    if (type === 'character' && data.character) {
+      return <CharacterDetail character={data.character} />;
     }
 
-    if (props.route.params.type === 'location') {
-      if (data.location) {
-        return <LocationDetail location={data.location} />;
-      }
+    if (type === 'location' && data.location) {
+      return <LocationDetail location={data.location} />;
     }
 
-    if (props.route.params.type === 'episode') {
-      if (data.episode) {
-        return <EpisodeDetail episode={data.episode} />;
-      }
+    if (type === 'episode' && data.episode) {
+      return <EpisodeDetail episode={data.episode} />;
     }
   };
 
