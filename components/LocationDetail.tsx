@@ -21,9 +21,9 @@ const LocationDetail = ({ location }: Props) => {
           <View style={styles.cardInfo}>
             <Text style={styles.title}>{location.name}</Text>
             <Text style={styles.text}>Dimension: {location.dimension}</Text>
-            {location.type ? (
+            {location.type && (
               <Text style={styles.text}>Gender: {location.type}</Text>
-            ) : null}
+            )}
             <Text style={styles.text}>Residents:</Text>
             <CharactersList characters={location.residents} />
           </View>

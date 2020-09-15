@@ -10,21 +10,34 @@ interface CharacterDetailProps {
 type Props = CharacterDetailProps;
 
 const CharacterDetail = ({ character }: Props) => {
+  const renderCharacaterInfo = () => {
+    const componentsToRender = [];
+
+    if (character.gender)
+      componentsToRender.push(
+        <Text style={styles.text}>Gender: {character.gender}</Text>
+      );
+
+    if (character.species)
+      componentsToRender.push(
+        <Text style={styles.text}>Specie: {character.species}</Text>
+      );
+
+    if (character.type)
+      componentsToRender.push(
+        <Text style={styles.text}>Type: {character.type}</Text>
+      );
+
+    return componentsToRender;
+  };
+
   return (
     <View style={styles.card}>
       <View>
         <Image source={{ uri: character.image }} style={styles.image} />
         <View style={styles.cardInfo}>
           <Text style={styles.title}>{character.name}</Text>
-          {character.gender ? (
-            <Text style={styles.text}>Gender: {character.gender}</Text>
-          ) : null}
-          {character.species ? (
-            <Text style={styles.text}>Specie: {character.species}</Text>
-          ) : null}
-          {character.type ? (
-            <Text style={styles.text}>Type: {character.type}</Text>
-          ) : null}
+          {renderCharacaterInfo()}
         </View>
       </View>
     </View>

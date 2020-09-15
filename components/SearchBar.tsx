@@ -67,13 +67,13 @@ const SearchBar = ({ setResults, type }: Props) => {
             : { ...styles.searchInput, ...styles.radiusRight }
         }
       />
-      {searchTerm.length > 0 ? (
+      {searchTerm.length > 0 && (
         <TouchableHighlight
           onPress={() => setSearchTerm('')}
           style={{ ...styles.iconContainer, ...styles.radiusRight }}>
           <AntDesign name="close" size={24} color="#cbd5e0" />
         </TouchableHighlight>
-      ) : null}
+      )}
     </>
   );
 };
