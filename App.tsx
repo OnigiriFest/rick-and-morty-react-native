@@ -1,13 +1,12 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { AntDesign } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign } from '@expo/vector-icons';
-
-import Results from './screens/ResultsSreen';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import DetailScreen from './screens/DetailScreen';
+import Results from './screens/ResultsSreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 
 const client = new ApolloClient({
@@ -19,7 +18,7 @@ const Tab = createBottomTabNavigator();
 
 function SearchTab() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator tabBarOptions={{ keyboardHidesTabBar: true }}>
       <Tab.Screen
         name="Characters"
         component={Results}

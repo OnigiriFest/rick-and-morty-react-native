@@ -1,6 +1,6 @@
 import { QueryResult } from '@apollo/client';
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Card from '../components/Card';
 import Header from '../components/Header';
