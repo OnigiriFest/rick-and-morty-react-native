@@ -28,6 +28,18 @@ const SearchBar = ({ setResults, type }: Props) => {
     };
   }, [searchTerm]);
 
+  const queryTerms = () => {
+    if (type === 'characters') {
+      return 'image';
+    } else if (type === 'locations') {
+      return 'dimension';
+    } else if (type === 'episodes') {
+      return 'episode';
+    } else {
+      return '';
+    }
+  };
+
   const query = gql`
     query ${type}($page: Int) {
       ${type}(filter: { name: "${
@@ -40,9 +52,7 @@ const SearchBar = ({ setResults, type }: Props) => {
         results {
           id
           name
-          ${type === 'characters' ? 'image' : ''}
-          ${type === 'locations' ? 'dimension' : ''}
-          ${type === 'episodes' ? 'episode' : ''}
+          ${queryTerms()}
         }
       }
     }
@@ -51,6 +61,11 @@ const SearchBar = ({ setResults, type }: Props) => {
   setResults(
     useQuery<ResultsData>(query, { notifyOnNetworkStatusChange: true })
   );
+
+  const searchTermStyles =
+    searchTerm.length > 0
+      ? styles.searchInput
+      : { ...styles.searchInput, ...styles.radiusRight };
 
   return (
     <>
@@ -61,11 +76,7 @@ const SearchBar = ({ setResults, type }: Props) => {
         value={searchTerm}
         onChangeText={(text) => setSearchTerm(text)}
         placeholder="Morty"
-        style={
-          searchTerm.length > 0
-            ? styles.searchInput
-            : { ...styles.searchInput, ...styles.radiusRight }
-        }
+        style={searchTermStyles}
       />
       {searchTerm.length > 0 && (
         <TouchableHighlight

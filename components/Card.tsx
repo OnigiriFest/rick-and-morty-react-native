@@ -13,20 +13,18 @@ interface CardProps {
 
 type Props = CardProps;
 
-const Card = ({ data, type, navigation }: Props) => {
-  return (
-    <>
-      {type === 'characters' ? (
-        <CharacterCard data={data} navigation={navigation} />
-      ) : (
-        <LocationAndEpisodeCard
-          data={data}
-          navigation={navigation}
-          type={type === 'locations' ? 'location' : 'episode'}
-        />
-      )}
-    </>
-  );
-};
+const Card = ({ data, type, navigation }: Props) => (
+  <>
+    {type === 'characters' ? (
+      <CharacterCard data={data} navigation={navigation} />
+    ) : (
+      <LocationAndEpisodeCard
+        data={data}
+        navigation={navigation}
+        type={type === 'locations' ? 'location' : 'episode'}
+      />
+    )}
+  </>
+);
 
 export default Card;

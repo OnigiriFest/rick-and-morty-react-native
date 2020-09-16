@@ -11,27 +11,25 @@ interface EpisodeDetailProps {
 
 type Props = EpisodeDetailProps;
 
-const EpisodeDetail = ({ episode }: Props) => {
-  return (
-    <ScrollView
-      style={styles.cardContainer}
-      contentContainerStyle={styles.cardContainerContent}>
-      <View style={styles.card}>
-        <View>
-          <View style={styles.cardInfo}>
-            <Text style={styles.title}>{episode.name}</Text>
-            <Text style={styles.text}>Episode: {episode.episode}</Text>
-            {episode.air_date && (
-              <Text style={styles.text}>Air Date: {episode.air_date}</Text>
-            )}
-            <Text style={styles.text}>Characters:</Text>
-            <CharactersList characters={episode.characters} />
-          </View>
+const EpisodeDetail = ({ episode }: Props) => (
+  <ScrollView
+    style={styles.cardContainer}
+    contentContainerStyle={styles.cardContainerContent}>
+    <View style={styles.card}>
+      <View>
+        <View style={styles.cardInfo}>
+          <Text style={styles.title}>{episode.name}</Text>
+          <Text style={styles.text}>Episode: {episode.episode}</Text>
+          {episode.air_date && (
+            <Text style={styles.text}>Air Date: {episode.air_date}</Text>
+          )}
+          <Text style={styles.text}>Characters:</Text>
+          <CharactersList characters={episode.characters} />
         </View>
       </View>
-    </ScrollView>
-  );
-};
+    </View>
+  </ScrollView>
+);
 
 const styles = StyleSheet.create({
   cardContainer: {

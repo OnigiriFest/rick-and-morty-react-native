@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-const Header = ({ children }: any) => {
-  return <View style={styles.header}>{children}</View>;
-};
+const Header = ({ children }: any) => (
+  <View style={styles.header}>{children}</View>
+);
 
 const styles = StyleSheet.create({
   header: {

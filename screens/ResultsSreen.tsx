@@ -20,9 +20,8 @@ const Results = ({ route: { params }, navigation }: Props) => {
   const [results, setResults] = useState<QueryResult>();
   const filter = params && params.type ? params.type : 'characters';
 
-  const extactKey = (item: Character & Location & Episode) => {
-    return item.id.toString();
-  };
+  const extactKey = (item: Character & Location & Episode) =>
+    item.id.toString();
 
   const handleOnEndReached = () => {
     if (!results) {
@@ -60,16 +59,17 @@ const Results = ({ route: { params }, navigation }: Props) => {
         <SearchBar type={filter} setResults={setResults} />
       </Header>
       <View style={styles.container}>
-        {results && results.data ? (
+        {results && results.data && (
           <FlatList
             contentContainerStyle={styles.contentContainer}
             keyExtractor={(item: Character & Location & Episode) =>
               extactKey(item)
             }
             data={
-              results && results.data && results.data[filter]
-                ? results?.data[filter].results
-                : null
+              results &&
+              results.data &&
+              results.data[filter] &&
+              results?.data[filter].results
             }
             onEndReached={handleOnEndReached}
             renderItem={(data) => (
@@ -82,7 +82,7 @@ const Results = ({ route: { params }, navigation }: Props) => {
               </View>
             )}
           />
-        ) : null}
+        )}
       </View>
     </View>
   );

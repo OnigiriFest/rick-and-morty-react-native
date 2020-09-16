@@ -17,16 +17,13 @@ const CharactersList = ({ characters }: Props) => {
   let charactersToDisplay = [...characters];
   charactersToDisplay = charactersToDisplay.splice(0, 5);
 
-  const renderList = () => {
-    return charactersToDisplay.map((character) => {
-      return (
-        <View key={character.id} style={styles.listItem}>
-          <Image source={{ uri: character.image }} style={styles.image} />
-          <Text style={styles.title}>{character.name}</Text>
-        </View>
-      );
-    });
-  };
+  const renderList = () =>
+    charactersToDisplay.map((character) => (
+      <View key={character.id} style={styles.listItem}>
+        <Image source={{ uri: character.image }} style={styles.image} />
+        <Text style={styles.title}>{character.name}</Text>
+      </View>
+    ));
 
   return <View style={styles.listContainer}>{renderList()}</View>;
 };

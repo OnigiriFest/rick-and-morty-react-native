@@ -7,19 +7,17 @@ interface WelcomeScreenProps {
 
 type Props = WelcomeScreenProps;
 
-const WelcomeScreen = ({ navigation }: Props) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>REACT NATIVE CHALLENGE</Text>
-        <Text style={styles.text}>Facundo Panizza</Text>
-      </View>
-      <View>
-        <Button title="ENTER" onPress={() => navigation.navigate('Results')} />
-      </View>
+const WelcomeScreen = ({ navigation }: Props) => (
+  <View style={styles.container}>
+    <View style={styles.textContainer}>
+      <Text style={styles.title}>REACT NATIVE CHALLENGE</Text>
+      <Text style={styles.text}>Facundo Panizza</Text>
     </View>
-  );
-};
+    <View>
+      <Button title="ENTER" onPress={() => navigation.navigate('Results')} />
+    </View>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {

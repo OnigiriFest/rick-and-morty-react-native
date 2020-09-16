@@ -11,27 +11,25 @@ interface LocationDetailProps {
 
 type Props = LocationDetailProps;
 
-const LocationDetail = ({ location }: Props) => {
-  return (
-    <ScrollView
-      style={styles.cardContainer}
-      contentContainerStyle={styles.cardContainerContent}>
-      <View style={styles.card}>
-        <View>
-          <View style={styles.cardInfo}>
-            <Text style={styles.title}>{location.name}</Text>
-            <Text style={styles.text}>Dimension: {location.dimension}</Text>
-            {location.type && (
-              <Text style={styles.text}>Gender: {location.type}</Text>
-            )}
-            <Text style={styles.text}>Residents:</Text>
-            <CharactersList characters={location.residents} />
-          </View>
+const LocationDetail = ({ location }: Props) => (
+  <ScrollView
+    style={styles.cardContainer}
+    contentContainerStyle={styles.cardContainerContent}>
+    <View style={styles.card}>
+      <View>
+        <View style={styles.cardInfo}>
+          <Text style={styles.title}>{location.name}</Text>
+          <Text style={styles.text}>Dimension: {location.dimension}</Text>
+          {location.type && (
+            <Text style={styles.text}>Gender: {location.type}</Text>
+          )}
+          <Text style={styles.text}>Residents:</Text>
+          <CharactersList characters={location.residents} />
         </View>
       </View>
-    </ScrollView>
-  );
-};
+    </View>
+  </ScrollView>
+);
 
 const styles = StyleSheet.create({
   cardContainer: {
