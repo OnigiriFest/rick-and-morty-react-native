@@ -1,9 +1,4 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-
-const Header = ({ children }: any) => (
-  <View style={styles.header}>{children}</View>
-);
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   header: {
@@ -16,4 +11,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export default styles;

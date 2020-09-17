@@ -5,9 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import DetailScreen from './screens/DetailScreen';
-import Results from './screens/ResultsSreen';
-import WelcomeScreen from './screens/WelcomeScreen';
+import DetailScreen from './screens/DetailScreen/DetailScreen';
+import Results from './screens/ResultsScreen/ResultsSreen';
+import WelcomeScreen from './screens/WelcomeScreen/WelcomeScreen';
 
 const client = new ApolloClient({
   uri: 'https://rickandmortyapi.com/graphql',

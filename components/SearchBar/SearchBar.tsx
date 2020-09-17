@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { gql, QueryResult, useQuery } from '@apollo/client';
 import { AntDesign } from '@expo/vector-icons';
-import { useQuery, gql, QueryResult } from '@apollo/client';
-
-import ResultsData from '../types/Results';
-import Filter from '../types/Filter';
+import React, { useEffect, useState } from 'react';
+import { TextInput, View } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import Filter from '../../types/Filter';
+import ResultsData from '../../types/Results';
+import styles from './SearchBarStyle';
 
-interface SearchBarProps {
+interface Props {
   setResults: (results: QueryResult) => void;
   type: Filter;
 }
-
-type Props = SearchBarProps;
 
 const SearchBar = ({ setResults, type }: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -88,30 +86,5 @@ const SearchBar = ({ setResults, type }: Props) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  searchInput: {
-    flex: 1,
-    backgroundColor: '#1A202C',
-    color: 'white',
-    height: 42,
-    paddingLeft: 10,
-  },
-  iconContainer: {
-    backgroundColor: '#1A202C',
-    justifyContent: 'center',
-    width: 40,
-    height: 42,
-    paddingHorizontal: 10,
-  },
-  iconLeft: {
-    borderTopLeftRadius: 100,
-    borderBottomLeftRadius: 100,
-  },
-  radiusRight: {
-    borderTopRightRadius: 100,
-    borderBottomRightRadius: 100,
-  },
-});
 
 export default SearchBar;

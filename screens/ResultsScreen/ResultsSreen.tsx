@@ -1,20 +1,19 @@
 import { QueryResult } from '@apollo/client';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import Card from '../components/Card';
-import Header from '../components/Header';
-import SearchBar from '../components/SearchBar';
-import Character from '../types/Character';
-import Episode from '../types/Episode';
-import Location from '../types/Location';
+import Card from '../../components/Card/Card';
+import Header from '../../components/Header/Header';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import Character from '../../types/Character';
+import Episode from '../../types/Episode';
+import Location from '../../types/Location';
+import styles from './ResultsScreenStyles';
 
-interface ResultsProps {
+interface Props {
   navigation: any;
   route: any;
 }
-
-type Props = ResultsProps;
 
 const Results = ({ route: { params }, navigation }: Props) => {
   const [results, setResults] = useState<QueryResult>();
@@ -87,29 +86,5 @@ const Results = ({ route: { params }, navigation }: Props) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    height: '90%',
-    backgroundColor: '#1A202C',
-  },
-  contentContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  activityIndicator: {
-    marginTop: 10,
-  },
-  resultsContainerText: {
-    color: 'white',
-    marginTop: 10,
-  },
-  paginationContainer: {
-    flexDirection: 'row',
-    marginBottom: 15,
-    paddingHorizontal: 20,
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-});
 
 export default Results;
